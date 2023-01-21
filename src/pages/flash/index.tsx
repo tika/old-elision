@@ -1,1 +1,4 @@
-exp
+
+export function Flash() {
+  return <div></div>;
+}
