@@ -1,29 +1,34 @@
-import { Inter } from "@next/font/google";
 import { getAuth } from "firebase/auth";
-import Link from "next/link";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { app } from "../lib/firebase";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-const inter = Inter({ subsets: ["latin"] });
 const auth = getAuth(app);
 
-export default function Home() {
+export default function Landing() {
   const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
+  const [u, l, e] = useAuthState(auth);
+  const router = useRouter();
 
-  if (error) {
+  if (error || e) {
     return (
       <div>
-        <p>Error: {error.message}</p>
+        <p>Error: {error?.message || e?.message}</p>
       </div>
     );
   }
-  if (loading) {
+
+  if (loading || l) {
     return <p>Loading...</p>;
   }
-  if (user) {
+
+  if (user || u) {
+    router.push("/app");
+
     return (
       <div>
-        <p>Signed In User: {user.user.email}</p>
+        <Link href="/app">Go to app</Link>
       </div>
     );
   }
@@ -37,18 +42,11 @@ export default function Home() {
       <div className="py-4"></div>
 
       <button
-        className="bg-fuchsia-500 px-4 py-1 rounded text-white"
+        className="bg-fuchsia-500 px-4 py-1 rounded text-white "
         onClick={() => signInWithGoogle()}
       >
         Login with Google
       </button>
-
-      {/* <Link
-        href="/demo"
-        className="bg-fuchsia-500 px-4 py-1 rounded text-white"
-      >
-        Get Started
-      </Link> */}
     </div>
   );
 }
