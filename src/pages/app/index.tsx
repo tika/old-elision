@@ -6,11 +6,17 @@ import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { Button } from "@/components/button";
+import { collection, getFirestore, query, where } from "firebase/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 export default function App() {
   const [user, loading, error] = useAuthState(auth);
+  const [topics, y, z] = useCollection(
+    query(collection(db, "topics"), where("uid", "==", user?.uid))
+  );
   const router = useRouter();
 
   if (error) {
@@ -31,6 +37,10 @@ export default function App() {
     return <div>Not signed in</div>;
   }
 
+  if (!topics) {
+    return;
+  }
+
   return (
     <div className="px-48">
       <nav className="flex justify-between py-16">
@@ -42,8 +52,13 @@ export default function App() {
       <h1>Good evening, {user.displayName}!</h1>
       <div className="py-8"></div>
       <h2>Your topics</h2>
+      {topics.docs.map((it) => (
+        <h1 key={it.id}>{it.data().title}</h1>
+      ))}
       <div>
-        <Button icon={<PlusIcon width={20} height={20} />}>Create Topic</Button>
+        <Button href="/app/create" icon={<PlusIcon width={20} height={20} />}>
+          Create Topic
+        </Button>
       </div>
     </div>
   );

@@ -1,0 +1,4 @@
+.field:empty:before {
+  content: "No text";
+  color: #999999;
+}
