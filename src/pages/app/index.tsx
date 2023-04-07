@@ -4,19 +4,17 @@ import { getAuth } from "firebase/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { PlusIcon } from "@heroicons/react/24/solid";
-import { Button } from "@/components/button";
-import { collection, getFirestore, query, where } from "firebase/firestore";
+import { collection, getFirestore, query } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { ElisionInput } from "@/components/elisioninput";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 export default function App() {
   const [user, loading, error] = useAuthState(auth);
-  const [topics, y, z] = useCollection(
-    query(collection(db, "topics"), where("uid", "==", user?.uid))
-  );
+  const [chats, y, z] = useCollection(query(collection(db, "chats")));
+
   const router = useRouter();
 
   if (error) {
@@ -37,7 +35,7 @@ export default function App() {
     return <div>Not signed in</div>;
   }
 
-  if (!topics) {
+  if (!chats) {
     return;
   }
 
@@ -49,16 +47,11 @@ export default function App() {
           <Avatar url={user.photoURL!} name={user.displayName!} size={48} />
         </div>
       </nav>
-      <h1>Good evening, {user.displayName}!</h1>
+      <h1>Hi, {user.displayName}!</h1>
       <div className="py-8"></div>
-      <h2>Your topics</h2>
-      {topics.docs.map((it) => (
-        <h1 key={it.id}>{it.data().title}</h1>
-      ))}
+
       <div>
-        <Button href="/app/create" icon={<PlusIcon width={20} height={20} />}>
-          Create Topic
-        </Button>
+        <ElisionInput></ElisionInput>
       </div>
     </div>
   );

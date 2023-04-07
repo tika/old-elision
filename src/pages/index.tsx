@@ -37,7 +37,7 @@ export default function Landing() {
     <div className="p-64">
       <h1 className="text-3xl font-bold underline">Elision</h1>
 
-      <div>[leaving something out? nah no way.]</div>
+      <div>[flashcards for stem]</div>
 
       <div className="py-4"></div>
 
