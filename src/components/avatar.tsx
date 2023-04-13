@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-type AvatarProps = {
+export type AvatarProps = {
   url: string;
   name: string;
   size?: number;

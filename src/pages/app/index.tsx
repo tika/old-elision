@@ -58,7 +58,7 @@ export default function App() {
           <div className="py-8 flex flex-col gap-2">
             {topics.docs.map((it) => {
               const topic = it.data() as Topic;
-              return <TopicListView topic={topic} key={it.id} />;
+              return <TopicListView topic={topic} key={it.id} id={it.id} />;
             })}
           </div>
           <Button onClick={() => router.push("/app/create")}>
