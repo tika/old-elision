@@ -1,5 +1,7 @@
+import { Action } from "@/components/action";
 import { app } from "@/lib/firebase";
 import { doc, getFirestore } from "firebase/firestore";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 
@@ -12,22 +14,28 @@ export default function TopicPage() {
 
   // get topic from firestore using id collection
   const [topic, loading, error] = useDocumentData(
-    doc(db, "topics", "xJ6uoQW1FoQ6DNVANzeW"),
-    {
-      snapshotListenOptions: { includeMetadataChanges: true },
-    }
+    doc(db, "topics", "xJ6uoQW1FoQ6DNVANzeW")
   );
 
-  console.log(loading, error);
-
-  if (!topic) {
-    return <div>Loading</div>;
+  if (!topic || loading) {
+    return (
+      <main>
+        <Head>
+          <title>Elision | Loading...</title>
+        </Head>
+        Loading
+      </main>
+    );
   }
 
   return (
-    <div>
-      <h1>Topic {topicId}</h1>
-      <h1>{topic.cards[0].definition}</h1>
-    </div>
+    <main>
+      <Head>
+        <title>Elision | {topic.title}</title>
+      </Head>
+      <div>
+        <Action cards={topic.cards} />
+      </div>
+    </main>
   );
 }

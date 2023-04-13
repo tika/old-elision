@@ -8,7 +8,6 @@ export function FullInput() {
 }
 
 export function Input(props: {
-  // state?: [string, (value: string) => void];
   placeholder?: string;
   label: string;
   value: string;

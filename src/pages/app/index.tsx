@@ -1,7 +1,5 @@
-import { Avatar } from "@/components/avatar";
 import { app } from "@/lib/firebase";
 import { getAuth } from "firebase/auth";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { collection, getFirestore, query } from "firebase/firestore";
@@ -46,13 +44,7 @@ export default function App() {
       <Head>
         <title>Elision | Homepage</title>
       </Head>
-      <div className="px-48">
-        <nav className="flex justify-between py-16">
-          <Image src="/logo.svg" alt="logo" width={100} height={100} />
-          <div className="flex items-center">
-            <Avatar url={user.photoURL!} name={user.displayName!} size={48} />
-          </div>
-        </nav>
+      <div>
         <div>
           <h1 className="text-2xl">Your Topics</h1>
           <div className="py-8 flex flex-col gap-2">
