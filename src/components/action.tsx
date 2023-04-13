@@ -7,20 +7,36 @@ export function Action(props: { cards: Flashcard[] }) {
 
   const card = props.cards[index];
 
+  function next() {
+    setIndex((index + 1) % props.cards.length);
+  }
+
+  function previous() {
+    setIndex((index - 1 + props.cards.length) % props.cards.length);
+  }
+
   return (
-    <div>
-      <div className="flex justify-center pb-10">
-        <h1>{card.term}</h1>
+    <div className="relative">
+      <div>
+        <div className="flex justify-center pb-10">
+          <h1>{card.term}</h1>
+        </div>
+
+        {flipped && (
+          <div>
+            <hr />
+            <h1 className="pt-10 flex justify-center">{card.definition}</h1>
+          </div>
+        )}
       </div>
 
-      {flipped && (
-        <div>
-          <hr />
-          <h1 className="pt-10 flex justify-center">{card.definition}</h1>
+      <div className="absolute -bottom-16 w-full">
+        <div className="flex gap-2 justify-center">
+          <Button onClick={previous}>Previous</Button>
+          <Button onClick={() => setFlipped(!flipped)}>Reveal</Button>
+          <Button onClick={next}>Next</Button>
         </div>
-      )}
-
-      <Button onClick={() => setFlipped(!flipped)}>Flip</Button>
+      </div>
     </div>
   );
 }

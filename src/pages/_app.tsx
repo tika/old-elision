@@ -32,7 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
   }
 
   return (
-    <main className={font.className + " px-48"}>
+    <main className={font.className + " px-48 min-h-screen"}>
       <nav className="flex justify-between py-16">
         <Link href="/">
           <Image src="/logo.svg" alt="logo" width={100} height={100} />
