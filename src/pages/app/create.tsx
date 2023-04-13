@@ -8,6 +8,7 @@ import { useState } from "react";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { CreateCard } from "@/components/createcard";
+import { toast } from "react-hot-toast";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -61,6 +62,7 @@ export default function Create() {
   function addBlankCard() {
     // ensure that there are current no blank cards
     if (cards.some((card) => card.term === "" || card.definition === "")) {
+      toast.error("You already have an empty card");
       return;
     }
 
@@ -68,9 +70,7 @@ export default function Create() {
   }
 
   return (
-    <div className="px-48">
-      <Navigation user={user} />
-
+    <div>
       <EditableInline
         label="Topic Title"
         tagName="span"
@@ -94,9 +94,10 @@ export default function Create() {
         ))}
       </div>
 
-      <Button onClick={addBlankCard}>Add new card</Button>
-
-      <Button onClick={createTopic}>Create Topic</Button>
+      <div className="flex gap-2">
+        <Button onClick={addBlankCard}>Add new card</Button>
+        <Button onClick={createTopic}>Create Topic</Button>
+      </div>
     </div>
   );
 }

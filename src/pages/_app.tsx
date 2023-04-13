@@ -1,12 +1,11 @@
 import type { AppProps } from "next/app";
 import "../styles/globals.css";
 import { Raleway } from "@next/font/google";
-import Image from "next/image";
-import { Avatar } from "@/components/avatar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { getAuth } from "firebase/auth";
 import { app } from "@/lib/firebase";
-import Link from "next/link";
+import { Navigation } from "@/components/navigation";
+import { Toaster } from "react-hot-toast";
 
 const font = Raleway({
   weight: ["400", "500", "600"],
@@ -33,15 +32,12 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <main className={font.className + " px-48 min-h-screen"}>
-      <nav className="flex justify-between py-16">
-        <Link href="/">
-          <Image src="/logo.svg" alt="logo" width={100} height={100} />
-        </Link>
-
-        <div className="flex items-center">
-          <Avatar url={user.photoURL!} name={user.displayName!} size={48} />
-        </div>
-      </nav>
+      <Toaster
+        toastOptions={{
+          position: "bottom-right",
+        }}
+      />
+      <Navigation user={user} />
       <Component {...pageProps} />
     </main>
   );
