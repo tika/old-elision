@@ -1,4 +1,5 @@
 import Image from "next/image";
+import BoringAvatar from "boring-avatars";
 
 export type AvatarProps = {
   user: ElisionUser;
@@ -19,17 +20,12 @@ export const Avatar = ({ user, size }: AvatarProps) => {
           height={size ?? defaultSize}
         />
       ) : (
-        <div
-          className={
-            "bg-blue-200 flex justify-center items-center rounded-full"
-          }
-          style={{
-            width: size ?? defaultSize,
-            height: size ?? defaultSize,
-          }}
-        >
-          <h1 className="font-bold">{user.username[0]}</h1>
-        </div>
+        <BoringAvatar
+          size={size ?? defaultSize}
+          name={user.id}
+          variant="marble"
+          colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]} // TODO: brand colors
+        />
       )}
     </div>
   );
