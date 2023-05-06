@@ -1,6 +1,6 @@
 type Flashcard = {
-  definition: string;
-  term: string;
+  front: string;
+  back: string;
 };
 
 type Topic = {

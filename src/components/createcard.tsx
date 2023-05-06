@@ -16,7 +16,17 @@ export function CreateCard(
           })
         }
       /> */}
-      <FormattedInput />
+      <Input
+        label="Input"
+        placeholder="Enter your definition here..."
+        value={props.definition}
+        onChange={(val) => {
+          props.onChange({
+            definition: val,
+            term: props.term,
+          });
+        }}
+      />
       <div className="py-4" />
       <Input
         label="Definition"
