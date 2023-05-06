@@ -6,6 +6,7 @@ import { getAuth } from "firebase/auth";
 import { app } from "@/lib/firebase";
 import { Navigation } from "@/components/navigation";
 import { Toaster } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const font = Raleway({
   weight: ["400", "500", "600"],
@@ -17,17 +18,10 @@ const auth = getAuth(app);
 export default function App({ Component, pageProps }: AppProps) {
   // get user from firebase auth
   const [user, loading, error] = useAuthState(auth);
+  const router = useRouter();
 
   if (loading) {
     return <div>Loading</div>;
-  }
-
-  if (!user) {
-    return (
-      <div>
-        <h1>Not logged in</h1>
-      </div>
-    );
   }
 
   return (
@@ -37,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
           position: "bottom-right",
         }}
       />
-      <Navigation user={user} />
+      {user && <Navigation auth={auth} user={user} />}
       <Component {...pageProps} />
     </main>
   );

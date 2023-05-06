@@ -1,21 +1,32 @@
 import Image from "next/image";
 
 export type AvatarProps = {
-  url: string;
-  name: string;
+  username: string;
+  googleAvatar?: GoogleAvatar;
   size?: number;
 };
 
-export const Avatar = ({ url, name, size }: AvatarProps) => {
+type GoogleAvatar = {
+  url: string;
+  name: string;
+};
+
+export const Avatar = ({ username, googleAvatar, size }: AvatarProps) => {
   return (
     <div>
-      <Image
-        className="rounded-full"
-        alt={name}
-        src={url}
-        width={size ?? 32}
-        height={size ?? 32}
-      />
+      {googleAvatar ? (
+        <Image
+          className="rounded-full"
+          alt={googleAvatar.name}
+          src={googleAvatar.url}
+          width={size ?? 32}
+          height={size ?? 32}
+        />
+      ) : (
+        <div>
+          <h1>{username}</h1>
+        </div>
+      )}
     </div>
   );
 };
