@@ -7,6 +7,9 @@ import { app } from "@/lib/firebase";
 import { Navigation } from "@/components/navigation";
 import { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { doc, getFirestore } from "firebase/firestore";
+import { convertElisionUser } from "@/lib/auth";
 
 const font = Raleway({
   weight: ["400", "500", "600"],
@@ -14,11 +17,12 @@ const font = Raleway({
 });
 
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 export default function App({ Component, pageProps }: AppProps) {
   // get user from firebase auth
   const [user, loading, error] = useAuthState(auth);
-  const router = useRouter();
+  const [userdata] = useDocumentData(doc(db, "userdata/" + user?.uid));
 
   if (loading) {
     return <div>Loading</div>;
@@ -31,7 +35,9 @@ export default function App({ Component, pageProps }: AppProps) {
           position: "bottom-right",
         }}
       />
-      {user && <Navigation auth={auth} user={user} />}
+      {user && userdata && (
+        <Navigation auth={auth} user={convertElisionUser(user, userdata)} />
+      )}
       <Component {...pageProps} />
     </main>
   );

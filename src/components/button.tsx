@@ -1,4 +1,3 @@
-import { Color } from "@/lib/color";
 import Link from "next/link";
 
 type ButtonProps = {
@@ -6,7 +5,6 @@ type ButtonProps = {
   children: React.ReactNode;
   icon?: JSX.Element;
   href?: string;
-  color?: Color;
 };
 
 export function Button(props: ButtonProps) {

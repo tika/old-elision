@@ -1,30 +1,34 @@
 import Image from "next/image";
 
 export type AvatarProps = {
-  username: string;
-  googleAvatar?: GoogleAvatar;
+  user: ElisionUser;
   size?: number;
 };
 
-type GoogleAvatar = {
-  url: string;
-  name: string;
-};
+export const Avatar = ({ user, size }: AvatarProps) => {
+  const defaultSize = 32;
 
-export const Avatar = ({ username, googleAvatar, size }: AvatarProps) => {
   return (
-    <div>
-      {googleAvatar ? (
+    <div className="select-none">
+      {!user.avatarURL ? (
         <Image
           className="rounded-full"
-          alt={googleAvatar.name}
-          src={googleAvatar.url}
-          width={size ?? 32}
-          height={size ?? 32}
+          alt={`${user.username}'s avatar`}
+          src={"user.avatarURL"}
+          width={size ?? defaultSize}
+          height={size ?? defaultSize}
         />
       ) : (
-        <div>
-          <h1>{username}</h1>
+        <div
+          className={
+            "bg-blue-200 flex justify-center items-center rounded-full"
+          }
+          style={{
+            width: size ?? defaultSize,
+            height: size ?? defaultSize,
+          }}
+        >
+          <h1 className="font-bold">{user.username[0]}</h1>
         </div>
       )}
     </div>
