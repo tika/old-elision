@@ -6,7 +6,7 @@ export type UserDisplayProps = {
   size?: number;
   reversed?: boolean;
   children?: React.ReactNode;
-  onClick(): void;
+  onClick?(): void;
   className?: string;
 };
 
@@ -15,7 +15,7 @@ export function UserDisplay(props: UserDisplayProps) {
     <div
       className={
         props.className +
-        " hover:bg-neutral-100 py-1 pl-8 cursor-pointer pr-1 rounded-full flex items-center gap-4 font-medium" +
+        " flex items-center gap-4 font-medium" +
         (props.reversed ? " flex-row-reverse text-right" : "")
       }
       onClick={props.onClick}

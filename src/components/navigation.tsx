@@ -1,10 +1,9 @@
 import Image from "next/image";
-import { Avatar } from "./avatar";
-import { Auth, User, signOut } from "firebase/auth";
+import { Auth } from "firebase/auth";
 import Link from "next/link";
-import { Button } from "./button";
 import { UserDisplay } from "./userdisplay";
 import { useState } from "react";
+import { UserMenu } from "./usermenu";
 
 interface NavigationProps {
   user: ElisionUser;
@@ -27,20 +26,18 @@ export function Navigation(props: NavigationProps) {
           <Image src="/logo.svg" alt="logo" width={100} height={100} />
         </Link>
         <div className="flex items-center gap-10">
-          <Button onClick={() => signOut(props.auth)}>Sign out</Button>
-
           <UserDisplay
             reversed
             user={props.user}
             size={48}
             onClick={() => setUserMenuOpened(!userMenuOpened)}
-            className="z-20"
+            className="z-20 hover:bg-neutral-100 py-1 pl-8 cursor-pointer pr-1 rounded-full"
           >
             <h1 className="font-light">3,800 ✿</h1>
           </UserDisplay>
           {userMenuOpened && (
             <div className="absolute bg-white border w-60 p-4 max-h-64 overflow-auto rounded top-32 right-0 z-30">
-              Hello world
+              <UserMenu user={props.user} auth={props.auth} />
             </div>
           )}
         </div>
