@@ -1,10 +1,15 @@
 import { useKeyPress } from "@/hooks/usekeypress";
 import styles from "../styles/elisioninput.module.css";
+import Latex from "react-latex-next";
 
-export function FullInput() {
+export function FormattedInput() {
   const isO = useKeyPress("Enter", "Control");
 
-  return <div contentEditable className={styles.main}></div>;
+  return (
+    <div>
+      <Latex>Hello</Latex>
+    </div>
+  );
 }
 
 export function Input(props: {

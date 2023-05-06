@@ -1,11 +1,11 @@
-import { Input } from "./elisioninput";
+import { FormattedInput, Input } from "./elisioninput";
 
 export function CreateCard(
   props: Flashcard & { onChange: (card: Flashcard) => void }
 ) {
   return (
     <div className="border py-8 px-8 rounded-lg">
-      <Input
+      {/* <Input
         label="Term"
         placeholder="Enter your term here..."
         value={props.term}
@@ -15,7 +15,8 @@ export function CreateCard(
             term: val,
           })
         }
-      />
+      /> */}
+      <FormattedInput />
       <div className="py-4" />
       <Input
         label="Definition"
