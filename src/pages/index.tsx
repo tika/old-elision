@@ -24,11 +24,11 @@ export default function Landing() {
   }
 
   if (user || u) {
-    router.push("/app");
+    router.push("/app/onboarding");
 
     return (
       <div>
-        <Link href="/app">Go to app</Link>
+        <Link href="/app/onboarding">Go to app</Link>
       </div>
     );
   }

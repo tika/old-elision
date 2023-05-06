@@ -11,11 +11,11 @@ export const Avatar = ({ user, size }: AvatarProps) => {
 
   return (
     <div className="select-none">
-      {!user.avatarURL ? (
+      {user.avatarURL ? (
         <Image
           className="rounded-full"
           alt={`${user.username}'s avatar`}
-          src={"user.avatarURL"}
+          src={user.avatarURL}
           width={size ?? defaultSize}
           height={size ?? defaultSize}
         />

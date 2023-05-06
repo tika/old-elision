@@ -6,15 +6,19 @@ export type UserDisplayProps = {
   size?: number;
   reversed?: boolean;
   children?: React.ReactNode;
+  onClick(): void;
+  className?: string;
 };
 
 export function UserDisplay(props: UserDisplayProps) {
   return (
     <div
       className={
-        "flex items-center gap-2 font-medium" +
+        props.className +
+        " hover:bg-neutral-100 py-1 pl-8 cursor-pointer pr-1 rounded-full flex items-center gap-4 font-medium" +
         (props.reversed ? " flex-row-reverse text-right" : "")
       }
+      onClick={props.onClick}
     >
       <Avatar user={props.user} size={props.size} />
       <div>
