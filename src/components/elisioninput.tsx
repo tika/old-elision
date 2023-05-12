@@ -60,7 +60,9 @@ export function FormattedInput() {
         ref={editableDivRef}
       ></div>
       <div
-        className={"top-0 py-2 px-4 " + (editing ? "hidden" : "")}
+        className={
+          "top-0 py-2 px-4 border min-h-fit " + (editing ? "hidden" : "")
+        }
         onClick={() => {
           if (editableDivRef.current) {
             editableDivRef.current.focus();
