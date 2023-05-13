@@ -7,6 +7,7 @@ import Latex from "react-latex";
 type CreateCardModalProps = {
   isOpen: boolean;
   setIsOpen(isOpen: boolean): void;
+  addCard(card: Flashcard): void;
   className: string;
   topic: string;
 };
@@ -41,7 +42,14 @@ export function CreateCardModal(props: CreateCardModalProps) {
             }
           >
             {previewFormatting ? (
-              <Latex>{cardFront}</Latex>
+              <div>
+                {cardFront.split("\n").map((it, i) => (
+                  <>
+                    <Latex key={i}>{it}</Latex>
+                    <br key={it + " " + i}></br>
+                  </>
+                ))}
+              </div>
             ) : (
               <textarea
                 value={cardFront}
@@ -61,7 +69,14 @@ export function CreateCardModal(props: CreateCardModalProps) {
             }
           >
             {previewFormatting ? (
-              <Latex>{cardBack}</Latex>
+              <div>
+                {cardBack.split("\n").map((it, i) => (
+                  <>
+                    <Latex key={i}>{it}</Latex>
+                    <br key={it + " " + i}></br>
+                  </>
+                ))}
+              </div>
             ) : (
               <textarea
                 value={cardBack}
@@ -75,7 +90,15 @@ export function CreateCardModal(props: CreateCardModalProps) {
         </div>
 
         <div className="flex gap-2 mt-10">
-          <Button onClick={() => props.setIsOpen(false)}>
+          <Button
+            onClick={() => {
+              props.addCard({
+                front: cardFront,
+                back: cardBack,
+              });
+              props.setIsOpen(false);
+            }}
+          >
             Add card to topic
           </Button>
           <Button onClick={() => props.setIsOpen(false)}>Cancel</Button>
