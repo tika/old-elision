@@ -1,6 +1,7 @@
 import styles from "../styles/elisioninput.module.css";
-import Latex from "react-latex-next";
+import Latex from "react-latex";
 import { useEffect, useRef, useState } from "react";
+import { getValFormatted } from "@/lib/contenteditableutils";
 
 export function FormattedInput() {
   const [editing, setEditing] = useState(false);
@@ -39,8 +40,6 @@ export function FormattedInput() {
     };
   }, [editableDivRef]);
 
-  console.log(value);
-
   // when unfocused, change back to div
   return (
     <div>
@@ -54,7 +53,8 @@ export function FormattedInput() {
         contentEditable
         onFocus={() => setEditing(true)}
         onBlur={(e) => {
-          setValue(e.currentTarget.innerText);
+          setValue(getValFormatted(e.currentTarget.childNodes));
+          console.log(getValFormatted(e.currentTarget.childNodes));
           setEditing(false);
         }}
         ref={editableDivRef}
@@ -91,27 +91,6 @@ export function FormattedInput() {
       </div>
     </div>
   );
-}
-
-{
-  /* <div
-        onClick={() => {
-          setEditing(true);
-        }}
-        className={editing ? " " : "hidden"}
-      >
-        <div
-          onChange={(e) => setValue(e.currentTarget.innerText ?? "")}
-          contentEditable
-          onFocus={() => {
-            setEditing(true);
-          }}
-          onBlur={() => {
-            setEditing(false);
-          }}
-          ref={editableDivRef}
-        ></div>
-      </div> */
 }
 
 export function Input(props: {

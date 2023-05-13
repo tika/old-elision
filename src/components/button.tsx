@@ -5,6 +5,7 @@ type ButtonProps = {
   children: React.ReactNode;
   icon?: JSX.Element;
   href?: string;
+  className?: string;
 };
 
 export function Button(props: ButtonProps) {
@@ -13,7 +14,10 @@ export function Button(props: ButtonProps) {
       {props.href ? (
         <Link
           href={props.href}
-          className="flex justify-center items-center gap-2 border rounded-lg px-3 py-1 transition duration-200 hover:bg-gray-100 hover:bg-opacity-50"
+          className={
+            "flex justify-center items-center gap-2 border rounded-lg px-3 py-1 transition duration-200 hover:bg-gray-100 hover:bg-opacity-50 " +
+            props.className
+          }
         >
           {props.icon}{" "}
           <span className="flex items-center h-full">{props.children}</span>
@@ -21,7 +25,10 @@ export function Button(props: ButtonProps) {
       ) : (
         <button
           onClick={props.onClick}
-          className="flex justify-center items-center gap-2 border rounded-lg px-3 py-1 transition duration-200 hover:bg-gray-100 hover:bg-opacity-50"
+          className={
+            "flex justify-center items-center gap-2 border rounded-lg px-3 py-1 transition duration-200 hover:bg-gray-100 hover:bg-opacity-50 " +
+            props.className
+          }
         >
           {props.icon}{" "}
           <span className="flex items-center h-full">{props.children}</span>
