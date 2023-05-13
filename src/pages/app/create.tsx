@@ -16,11 +16,7 @@ const db = getFirestore(app);
 export default function Create() {
   const [user, loading, error] = useAuthState(auth);
   const title = useState("");
-  const [cards, setCards] = useState<Flashcard[]>([
-    { front: "Test", back: "Test" },
-    { front: "Test2", back: "Test" },
-    { front: "TEst2", back: "test" },
-  ]);
+  const [cards, setCards] = useState<Flashcard[]>([]);
   const [cardEditorOpen, setCardEditorOpen] = useState(false);
   const router = useRouter();
 
@@ -65,17 +61,6 @@ export default function Create() {
     return <div>Not signed in</div>;
   }
 
-  // // If the user wants to add a new flashcard, we add a new card to the array
-  // function addBlankCard() {
-  //   // ensure that there are current no blank cards
-  //   if (cards.some((card) => card.front === "" || card.back === "")) {
-  //     toast.error("You already have an empty card");
-  //     return;
-  //   }
-
-  //   setCards([...cards, { front: "", back: "" }]);
-  // }
-
   return (
     <div>
       <Head>
@@ -87,6 +72,7 @@ export default function Create() {
         setIsOpen={(val) => setCardEditorOpen(val)}
         className="absolute top-0 left-0 flex justify-center items-center w-screen h-screen bg-black bg-opacity-25 z-50"
         topic={title[0]}
+        addCard={(newCard) => setCards([...cards, newCard])}
       />
 
       <div className={`${cardEditorOpen ? "blur-sm" : ""}`}>
