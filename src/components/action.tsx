@@ -19,13 +19,13 @@ export function Action(props: { cards: Flashcard[] }) {
     <div className="relative">
       <div>
         <div className="flex justify-center pb-10">
-          <h1>{card.term}</h1>
+          <h1>{card.front}</h1>
         </div>
 
         {flipped && (
           <div>
             <hr />
-            <h1 className="pt-10 flex justify-center">{card.definition}</h1>
+            <h1 className="pt-10 flex justify-center">{card.back}</h1>
           </div>
         )}
       </div>

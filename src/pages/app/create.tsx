@@ -23,8 +23,12 @@ export default function Create() {
   async function createTopic() {
     if (!user) return;
 
-    if (!title || title.length < 3) {
+    if (!title[0] || title[0].length < 3) {
       return toast.error("Topics need titles");
+    }
+
+    if (cards.length < 2) {
+      return toast.error("A topic needs at least 2 cards");
     }
 
     try {
@@ -52,7 +56,14 @@ export default function Create() {
   }
 
   if (loading) {
-    return <div>Loading</div>;
+    return (
+      <main>
+        <Head>
+          <title>Loading...| Elision</title>
+        </Head>
+        <div>Loading</div>
+      </main>
+    );
   }
 
   if (!user) {
@@ -64,7 +75,7 @@ export default function Create() {
   return (
     <div>
       <Head>
-        <title>Elision | Create Topic</title>
+        <title>Create Topic | Elision</title>
       </Head>
 
       <CreateCardModal

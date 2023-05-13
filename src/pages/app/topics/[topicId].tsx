@@ -1,7 +1,8 @@
 import { Action } from "@/components/action";
+import { Button } from "@/components/button";
 import { app } from "@/lib/firebase";
 import { getAuth } from "firebase/auth";
-import { doc, getFirestore } from "firebase/firestore";
+import { collection, deleteDoc, doc, getFirestore } from "firebase/firestore";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -37,24 +38,41 @@ export default function TopicPage() {
 
     return <div>Not signed in</div>;
   }
+
   if (!topic || loading) {
     return (
       <main>
         <Head>
-          <title>Elision | Loading...</title>
+          <title>Loading...| Elision</title>
         </Head>
         Loading
       </main>
     );
   }
 
+  async function deleteTopic() {
+    if (!user) return;
+
+    try {
+      await deleteDoc(doc(db, "topics/" + topicId));
+
+      // redirect
+      router.push("/app");
+    } catch (e) {
+      console.log("Error");
+    }
+  }
+
   return (
     <main>
       <Head>
-        <title>Elision | {topic.title}</title>
+        <title>{topic.title} | Elision</title>
       </Head>
       <div>
         <Action cards={topic.cards} />
+        <Button className="bg-red-500" onClick={() => deleteTopic()}>
+          Delete Topic
+        </Button>
       </div>
     </main>
   );

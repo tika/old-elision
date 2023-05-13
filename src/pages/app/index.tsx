@@ -7,7 +7,6 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { Button } from "@/components/button";
 import Head from "next/head";
 import { TopicListView } from "@/components/topiclistview";
-import Latex from "react-latex-next";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
