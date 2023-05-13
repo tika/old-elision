@@ -8,7 +8,8 @@ import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "react-hot-toast";
 import Head from "next/head";
-import { CreateCardModal } from "@/components/createcardmodal";
+import { EditCardModal } from "@/components/editcardmodal";
+import { getBlankCard } from "@/lib/cardutils";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -17,7 +18,7 @@ export default function Create() {
   const [user, loading, error] = useAuthState(auth);
   const title = useState("");
   const [cards, setCards] = useState<Flashcard[]>([]);
-  const [cardEditorOpen, setCardEditorOpen] = useState(false);
+  const [cardEditorOpen, setCardEditorOpen] = useState<Flashcard | null>(null);
   const router = useRouter();
 
   async function createTopic() {
@@ -78,12 +79,22 @@ export default function Create() {
         <title>Create Topic | Elision</title>
       </Head>
 
-      <CreateCardModal
-        isOpen={cardEditorOpen}
-        setIsOpen={(val) => setCardEditorOpen(val)}
+      <EditCardModal
+        setIsOpen={(val) =>
+          setCardEditorOpen(val === false ? null : getBlankCard())
+        }
+        card={cardEditorOpen}
         className="absolute top-0 left-0 flex justify-center items-center w-screen h-screen bg-black bg-opacity-25 z-50"
         topic={title[0]}
-        addCard={(newCard) => setCards([...cards, newCard])}
+        onCardUpdate={(newCard) => {
+          if (cardEditorOpen === getBlankCard()) {
+            setCards([...cards, newCard]);
+          } else {
+            const cardsFiltered = cards.filter((it) => it !== cardEditorOpen);
+
+            setCards([...cardsFiltered, newCard]);
+          }
+        }}
       />
 
       <div className={`${cardEditorOpen ? "blur-sm" : ""}`}>
@@ -96,7 +107,9 @@ export default function Create() {
         />
 
         <div className="flex gap-2">
-          <Button onClick={() => setCardEditorOpen(true)}>Add new card</Button>
+          <Button onClick={() => setCardEditorOpen(getBlankCard())}>
+            Add new card
+          </Button>
           <Button onClick={createTopic}>Create Topic</Button>
         </div>
 
@@ -108,8 +121,9 @@ export default function Create() {
           {cards.map((card, index) => (
             <div
               key={index}
-              className="border rounded p-4"
+              className="border rounded p-4 cursor-pointer"
               style={{ width: "33%" }}
+              onClick={() => setCardEditorOpen(card)}
             >
               {card.front}
             </div>

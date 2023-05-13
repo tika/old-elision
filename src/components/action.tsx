@@ -5,6 +5,10 @@ export function Action(props: { cards: Flashcard[] }) {
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
 
+  if (props.cards.length < 1) {
+    return null;
+  }
+
   const card = props.cards[index];
 
   function next() {

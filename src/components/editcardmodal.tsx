@@ -1,31 +1,46 @@
 import { Dialog } from "@headlessui/react";
 import { Button } from "./button";
-import { FormattedInput } from "./elisioninput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Latex from "react-latex";
+import { getBlankCard, isBlankCard } from "@/lib/cardutils";
 
-type CreateCardModalProps = {
-  isOpen: boolean;
+type EditCardModalProps = {
+  card: Flashcard | null;
   setIsOpen(isOpen: boolean): void;
-  addCard(card: Flashcard): void;
+  onCardUpdate(card: Flashcard): void;
   className: string;
   topic: string;
 };
 
-export function CreateCardModal(props: CreateCardModalProps) {
+export function EditCardModal(props: EditCardModalProps) {
   const [previewFormatting, setPreviewFormatting] = useState(false);
+
   const [cardFront, setCardFront] = useState("");
   const [cardBack, setCardBack] = useState("");
 
+  useEffect(() => {
+    if (!props.card) return;
+
+    setCardFront(props.card.front);
+    setCardBack(props.card.back);
+  }, [props.card]);
+
+  function close() {
+    props.setIsOpen(false);
+  }
+
+  console.log(props.card);
+
   return (
     <Dialog
-      open={props.isOpen}
-      onClose={() => props.setIsOpen(false)}
+      open={props.card !== null}
+      onClose={() => close()}
       className={props.className}
     >
       <Dialog.Panel className="bg-white px-10 py-10 rounded w-2/5">
         <Dialog.Title className="text-3xl mb-10 flex justify-between">
-          {props.topic ?? "Untitled Topic"} &gt; New Card
+          {props.topic ?? "Untitled Topic"} &gt;{" "}
+          {isBlankCard(props.card) ? "New" : "Edit"} Card
           <Button onClick={() => setPreviewFormatting(!previewFormatting)}>
             <p className="text-base">
               Preview with{previewFormatting && "out"} Formatting
@@ -92,16 +107,17 @@ export function CreateCardModal(props: CreateCardModalProps) {
         <div className="flex gap-2 mt-10">
           <Button
             onClick={() => {
-              props.addCard({
+              props.onCardUpdate({
                 front: cardFront,
                 back: cardBack,
               });
-              props.setIsOpen(false);
+
+              close();
             }}
           >
-            Add card to topic
+            {isBlankCard(props.card) ? "Create" : "Update"} card
           </Button>
-          <Button onClick={() => props.setIsOpen(false)}>Cancel</Button>
+          <Button onClick={() => close()}>Cancel</Button>
         </div>
       </Dialog.Panel>
     </Dialog>
