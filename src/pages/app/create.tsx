@@ -10,6 +10,7 @@ import { toast } from "react-hot-toast";
 import Head from "next/head";
 import { EditCardModal } from "@/components/editcardmodal";
 import { getBlankCard } from "@/lib/cardutils";
+import Latex from "react-latex";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -121,11 +122,11 @@ export default function Create() {
           {cards.map((card, index) => (
             <div
               key={index}
-              className="border rounded p-4 cursor-pointer"
               style={{ width: "33%" }}
               onClick={() => setCardEditorOpen(card)}
+              className="border rounded p-4 cursor-pointer"
             >
-              {card.front}
+              <Latex>{card.front}</Latex>
             </div>
           ))}
         </div>
