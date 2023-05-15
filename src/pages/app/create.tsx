@@ -3,7 +3,7 @@ import { EditableInline } from "@/components/editablefield";
 import { app } from "@/lib/firebase";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { toast } from "react-hot-toast";
@@ -11,16 +11,39 @@ import Head from "next/head";
 import { EditCardModal } from "@/components/editcardmodal";
 import { getBlankCard } from "@/lib/cardutils";
 import Latex from "react-latex";
+import {
+  loadAutosavedTopic,
+  removeAutosavedTopic,
+  saveAutosavedTopic,
+} from "@/lib/browserstorage";
 
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 export default function Create() {
   const [user, loading, error] = useAuthState(auth);
-  const title = useState("");
+  const [title, setTitle] = useState("");
   const [cards, setCards] = useState<Flashcard[]>([]);
   const [cardEditorOpen, setCardEditorOpen] = useState<Flashcard | null>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const savedTopic = loadAutosavedTopic();
+    if (!savedTopic || title || cards.length > 0) return;
+
+    setTitle(savedTopic.title);
+    setCards(savedTopic.cards);
+  }, [title, cards]);
+
+  // autosave
+  useEffect(() => {
+    if (!title || cards.length === 0) return;
+
+    saveAutosavedTopic({
+      title,
+      cards,
+    });
+  }, [title, cards]);
 
   async function createTopic() {
     if (!user) return;
@@ -102,7 +125,7 @@ export default function Create() {
         <EditableInline
           label="Topic Title"
           tagName="span"
-          state={title}
+          state={[title, setTitle]}
           className="text-5xl font-black p-2 cursor-text mb-6"
           dataContent="Topic title"
         />
@@ -112,6 +135,16 @@ export default function Create() {
             Add new card
           </Button>
           <Button onClick={createTopic}>Create Topic</Button>
+
+          <Button
+            onClick={() => {
+              removeAutosavedTopic();
+              setTitle("");
+              setCards([]);
+            }}
+          >
+            Clear Topic
+          </Button>
         </div>
 
         <hr className="my-5" />

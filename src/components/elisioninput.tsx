@@ -54,7 +54,7 @@ export function FormattedInput() {
         onFocus={() => setEditing(true)}
         onBlur={(e) => {
           setValue(getValFormatted(e.currentTarget.childNodes));
-          console.log(getValFormatted(e.currentTarget.childNodes));
+
           setEditing(false);
         }}
         ref={editableDivRef}

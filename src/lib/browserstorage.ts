@@ -4,7 +4,13 @@ const autosaveTopicKey = "autosave-topic";
 function isTopic(item: any): item is Topic {
   const keys = Object.keys(item);
 
-  return keys.includes("title") && keys.includes("cards");
+  console.log(keys);
+
+  if (!keys.includes("title") || !keys.includes("cards")) {
+    return false;
+  }
+
+  return true;
 }
 
 function resetAutosavedTopic() {
@@ -15,12 +21,12 @@ export function loadAutosavedTopic(): Topic | null {
   const item = localStorage.getItem(autosaveTopicKey);
   if (!item) return null;
 
-  const topic = JSON.stringify(item);
+  const topic = JSON.parse(item);
 
-  if (!isTopic(topic)) {
-    resetAutosavedTopic();
-    return null;
-  }
+  // if (!isTopic(topic)) {
+  //   resetAutosavedTopic();
+  //   return null;
+  // }
 
   return topic;
 }

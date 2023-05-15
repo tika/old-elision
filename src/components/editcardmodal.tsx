@@ -29,8 +29,6 @@ export function EditCardModal(props: EditCardModalProps) {
     props.setIsOpen(false);
   }
 
-  console.log(props.card);
-
   return (
     <Dialog
       open={props.card !== null}
