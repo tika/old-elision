@@ -28,12 +28,23 @@ export default function Create() {
   const router = useRouter();
 
   useEffect(() => {
-    const savedTopic = loadAutosavedTopic();
-    if (!savedTopic || title || cards.length > 0) return;
+    // Just dont run this if we already have something
+    if (title.trim().length === 0 || cards.length > 0) {
+      return;
+    }
 
+    const savedTopic = loadAutosavedTopic();
+
+    // If there's nothing saved
+    if (!savedTopic) return;
+
+    // Set the new state
     setTitle(savedTopic.title);
     setCards(savedTopic.cards);
-  }, [title, cards]);
+
+    // & tell the user what we've done!
+    toast.success("We restored your draft topic");
+  }, [cards.length, title]);
 
   // autosave
   useEffect(() => {
